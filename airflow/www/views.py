@@ -780,8 +780,13 @@ class Airflow(BaseView):
                     s3 = boto3.resource('s3')
                     s3_obj = s3.Object(bucket, key)
                     log += s3_obj.get()['Body'].read().decode()
-                except:
+                except Exception as e:
                     log += '*** No log found on S3. (s3://{}/{})\n'.format(bucket, key)
+                    try:
+                        log += str(e.args + '\n')
+                        log += str(e)
+                    except:
+                        log += '*** Unknown Exception'
 
             session.commit()
             session.close()
