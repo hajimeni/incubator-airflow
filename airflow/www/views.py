@@ -774,7 +774,7 @@ class Airflow(BaseView):
                 log += '*** Fetching log from S3: {}\n'.format(s3_log_loc)
                 log += ('*** Note: S3 logs are only available once '
                         'tasks have completed.\n')
-                bucket, key = s3_log.replace('s3://', '', 1).split('/', 1)
+                bucket, key = s3_log_loc.replace('s3://', '', 1).split('/', 1)
                 s3_key = boto.s3.key.Key(s3.get_bucket(bucket), key)
                 if s3_key.exists():
                     log += '\n' + s3_key.get_contents_as_string().decode()
