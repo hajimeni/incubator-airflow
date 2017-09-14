@@ -202,7 +202,7 @@ def run(args):
     if configuration.get('core', 'S3_LOG_FOLDER').startswith('s3:'):
         import boto
         s3_log = filename.replace(log, configuration.get('core', 'S3_LOG_FOLDER'))
-        bucket, key = s3_log.lstrip('s3:/').split('/', 1)
+        bucket, key = s3_log.replace('s3://', '', 1).split('/', 1)
         if os.path.exists(filename):
 
             # get logs
