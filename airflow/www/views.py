@@ -776,14 +776,10 @@ class Airflow(BaseView):
                 log += ('*** Note: S3 logs are only available once '
                         'tasks have completed.\n')
                 bucket, key = s3_log_loc.replace('s3://', '', 1).split('/', 1)
-                try:
-                    s3_client.head_object(Bucket=bucket, Key=key)
-                    s3 = boto3.resource('s3')
-                    s3_obj = s3.Object(bucket, key)
-                    log += s3_obj.get()['Body'].read()
-                except Exception as e:
-                    log += '*** No log found on S3: s3://{}/{}\n'.format(bucket, key)
-                    raise e
+                s3_client.head_object(Bucket=bucket, Key=key)
+                s3 = boto3.resource('s3')
+                s3_obj = s3.Object(bucket, key)
+                log += s3_obj.get()['Body'].read()
 
             session.commit()
             session.close()
