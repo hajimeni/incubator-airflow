@@ -771,6 +771,7 @@ class Airflow(BaseView):
                 s3_client = boto3.client('s3')
                 s3_log_loc = os.path.join(
                     configuration.get('core', 'S3_LOG_FOLDER'), log_relative)
+                log += '*** Local relative log: {}'.format(log_relative)
                 log += '*** Fetching log from S3: {}\n'.format(s3_log_loc)
                 log += ('*** Note: S3 logs are only available once '
                         'tasks have completed.\n')
@@ -781,7 +782,7 @@ class Airflow(BaseView):
                     s3_obj = s3.Object(bucket, key)
                     log += s3_obj.get()['Body'].read().decode()
                 except Exception as e:
-                    log += '*** No log found on S3. (s3://{}/{})\n'.format(bucket, key)
+                    log += '*** No log found on S3: s3://{}/{}\n'.format(bucket, key)
                     try:
                         log += str(e.args + '\n')
                         log += str(e)
